@@ -1,48 +1,55 @@
 import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0);
+export default function App() {
+  const [value, setValue] = useState(0);
+
+  const increase = () => {
+    setValue(prev => prev + 1);
+  };
+
+  const decrease = () => {
+    setValue(prev => prev - 1);
+  };
 
   return (
-    <div style={styles.container}>
-      <button style={styles.button}>
-        {count}
-      </button>
+    <div style={ui.wrapper}>
+      <div style={ui.display}>{value}</div>
 
-      <button
-        style={styles.button}
-        onClick={() => setCount(count + 1)}
-      >
-        +
-      </button>
+      <div style={ui.controls}>
+        <button style={ui.btn} onClick={increase}>
+          Increment
+        </button>
 
-      <button
-        style={styles.button}
-        onClick={() => setCount(count - 1)}
-      >
-        -
-      </button>
+        <button style={ui.btn} onClick={decrease}>
+          Decrement
+        </button>
+      </div>
     </div>
   );
 }
 
-const styles = {
-  container: {
-  height: "100vh",
-  width: "100vw",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "16px",
-}
-,
-  button: {
-    width: "200px",
-    padding: "15px",
-    fontSize: "18px",
+const ui = {
+  wrapper: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f4f4f4",
+    gap: "20px",
+  },
+  display: {
+    fontSize: "32px",
+    fontWeight: "bold",
+  },
+  controls: {
+    display: "flex",
+    gap: "12px",
+  },
+  btn: {
+    padding: "12px 24px",
+    fontSize: "16px",
     cursor: "pointer",
   },
 };
 
-export default App;
