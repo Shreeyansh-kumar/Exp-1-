@@ -1,106 +1,47 @@
 import { useState } from "react";
 
-function App() {
-  const [input, setInput] = useState("");
-  const [todos, setTodos] = useState([]);
+export default function App() {
+  const [task, setTask] = useState("");
+  const [taskList, setTaskList] = useState([]);
 
-  const addTodo = () => {
-    if (input.trim() === "") return;
-    setTodos([...todos, input]);
-    setInput("");
+  const handleAdd = () => {
+    if (!task.trim()) return;
+
+    setTaskList((prev) => [...prev, task]);
+    setTask("");
   };
 
-  const deleteTodo = (index) => {
-    setTodos(todos.filter((_, i) => i !== index));
-  };
-
-  const styles = {
-    app: {
-      fontFamily: "Arial, sans-serif",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      padding: "20px",
-    },
-    addItem: {
-      width: "100vw",
-      margin: "0 auto",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      flexDirection: "row",
-      gap: "10px",
-    },
-    header: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "10px",
-    },
-    input: {
-      flex: 1,
-      maxWidth: "500px",
-      padding: "6px",
-      fontSize: "14px",
-    },
-    addButton: {
-      padding: "6px 10px",
-      cursor: "pointer",
-    },
-    list: {
-      display: "flex",
-      flexDirection: "column",
-      fontSize: "12px",
-      width: "100%",
-      maxWidth: "600px",
-      marginTop: "20px",
-      padding: "0",
-    },
-    listItem: {
-      listStyle: "none",
-      display: "flex",
-      justifyContent: "left",
-      alignItems: "center",
-      padding: "8px",
-      borderBottom: "1px solid #ccc",
-    },
-    deleteButton: {
-      background: "none",
-      border: "none",
-      cursor: "pointer",
-      fontSize: "16px",
-    },
+  const handleRemove = (id) => {
+    setTaskList((prev) => prev.filter((_, idx) => idx !== id));
   };
 
   return (
-    <div style={styles.app}>
-      <div style={styles.header}>
-        <h1>Todo List</h1>
-      </div>
+    <div style={layout.container}>
+      <h2 style={layout.title}>My Tasks</h2>
 
-      <div style={styles.addItem}>
+      <div style={layout.inputRow}>
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Enter a todo"
-          style={styles.input}
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          placeholder="Write a task..."
+          style={layout.inputBox}
         />
 
-        <button onClick={addTodo} style={styles.addButton}>
-          Add
+        <button onClick={handleAdd} style={layout.actionBtn}>
+          Add Task
         </button>
       </div>
 
-      <ul style={styles.list}>
-        {todos.map((todo, index) => (
-          <li key={index} style={styles.listItem}>
-            {todo}
+      <ul style={layout.taskList}>
+        {taskList.map((item, idx) => (
+          <li key={idx} style={layout.taskItem}>
+            <span>{item}</span>
             <button
-              onClick={() => deleteTodo(index)}
-              style={styles.deleteButton}
+              onClick={() => handleRemove(idx)}
+              style={layout.removeBtn}
             >
-              ❌
+              ✖
             </button>
           </li>
         ))}
@@ -109,4 +50,52 @@ function App() {
   );
 }
 
-export default App;
+const layout = {
+  container: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "24px",
+    fontFamily: "sans-serif",
+    backgroundColor: "#f9f9f9",
+  },
+  title: {
+    marginBottom: "16px",
+  },
+  inputRow: {
+    display: "flex",
+    gap: "12px",
+    width: "100%",
+    maxWidth: "520px",
+  },
+  inputBox: {
+    flex: 1,
+    padding: "8px",
+    fontSize: "14px",
+  },
+  actionBtn: {
+    padding: "8px 14px",
+    cursor: "pointer",
+  },
+  taskList: {
+    width: "100%",
+    maxWidth: "520px",
+    marginTop: "24px",
+    padding: 0,
+  },
+  taskItem: {
+    listStyle: "none",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "10px",
+    borderBottom: "1px solid #ddd",
+  },
+  removeBtn: {
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "16px",
+  },
+};
